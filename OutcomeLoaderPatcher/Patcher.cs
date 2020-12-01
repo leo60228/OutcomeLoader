@@ -14,6 +14,7 @@ namespace OutcomeLoader.Patcher {
             var voidType = module.ImportReference(typeof(void));
 
             var beforeSerialize = new MethodDefinition("OnBeforeSerialize", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final, voidType);
+            beforeSerialize.NoInlining = true;
             beforeSerialize.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
 
             TypeReference debug = null;
@@ -22,6 +23,7 @@ namespace OutcomeLoader.Patcher {
             log.Parameters.Add(new ParameterDefinition(module.ImportReference(typeof(object))));
 
             var afterDeserialize = new MethodDefinition("OnAfterDeserialize", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final, voidType);
+            afterDeserialize.NoInlining = true;
             afterDeserialize.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
 
             TypeReference callbackReceiver = null;
