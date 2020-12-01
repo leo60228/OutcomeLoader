@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="BepInEx">
+      <HintPath>../bepinex/BepInEx.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>../bepinex/Mono.Cecil.dll</HintPath>
     </Reference>
