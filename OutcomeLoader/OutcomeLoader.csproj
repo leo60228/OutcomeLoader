@@ -21,6 +21,10 @@
       <HintPath>../lib-stripped/UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>../lib-stripped/UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="BepInEx">
       <HintPath>../bepinex/BepInEx.dll</HintPath>
       <Private>False</Private>
