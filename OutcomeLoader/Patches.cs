@@ -52,6 +52,7 @@ namespace OutcomeLoader {
                 .WithAttributeOverride(typeof(UnityEngine.Object), "hideFlags", new YamlIgnoreAttribute())
                 .WithAttributeOverride(typeof(UnityEngine.Object), "name", new YamlIgnoreAttribute())
                 .WithTypeInspector(x => new ConditionTypeInspector(x))
+                .WithTypeConverter(new CounterDataTypeConverter())
                 .EnsureRoundtrip()
                 .Build();
 
@@ -103,6 +104,7 @@ namespace OutcomeLoader {
                     .WithAttributeOverride(typeof(UnityEngine.Object), "hideFlags", new YamlIgnoreAttribute())
                     .WithAttributeOverride(typeof(UnityEngine.Object), "name", new YamlIgnoreAttribute())
                     .WithTypeInspector(x => new ConditionTypeInspector(x))
+                    .WithTypeConverter(new CounterDataTypeConverter())
                     .WithObjectFactory(new ScriptableObjectFactory(new DefaultObjectFactory()))
                     .Build();
                 OutcomeBase newOutcome = deserializer.Deserialize<OutcomeBase>(overrideYaml);
