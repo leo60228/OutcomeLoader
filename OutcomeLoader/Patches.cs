@@ -56,7 +56,13 @@ namespace OutcomeLoader {
                 .EnsureRoundtrip()
                 .Build();
 
-            string yaml = serializer.Serialize(__instance);
+            string yaml;
+
+            using (StringWriter writer = new StringWriter()) {
+                serializer.Serialize(writer, __instance, typeof(OutcomeBase));
+                yaml = writer.ToString();
+            }
+
             Encoding enc = Encoding.UTF8;
             byte[] yamlBytes = enc.GetBytes(yaml);
             byte[] hash;
