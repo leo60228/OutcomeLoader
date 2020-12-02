@@ -62,8 +62,11 @@ namespace OutcomeLoader {
             }
         }
 
-        private class ConditionPropertyDescriptor : ConditionPropertyDescriptor<object, object> {
-            public ConditionPropertyDescriptor(string name) : base(name, null) {}
+        private static class ConditionPropertyDescriptor {
+            public static ConditionPropertyDescriptor<object, object> Create(string name)
+                => new ConditionPropertyDescriptor<object, object>(name, null);
+            public static ConditionPropertyDescriptor<T1, T2> Create<T1, T2>(string name, IPropertyConverter<T1, T2> parent)
+                => new ConditionPropertyDescriptor<T1, T2>(name, parent);
         }
 
         private class StaticDataObjConverter<T> : IPropertyConverter<T, string> where T: StaticDataObj {
@@ -97,6 +100,10 @@ namespace OutcomeLoader {
             }
         }
 
+        private static class ArrayConverter {
+            public static ArrayConverter<T1, T2> Create<T1, T2>(IPropertyConverter<T1, T2> parent) => new ArrayConverter<T1, T2>(parent);
+        }
+
         public ConditionTypeInspector(ITypeInspector innerTypeDescriptor) {
             this.innerTypeDescriptor = innerTypeDescriptor ?? throw new ArgumentNullException(nameof(innerTypeDescriptor));
         }
@@ -107,14 +114,14 @@ namespace OutcomeLoader {
             }
 
             if (type == typeof(Condition)) {
-                yield return new ConditionPropertyDescriptor("_never");
-                yield return new ConditionPropertyDescriptor("CurrentScene");
-                yield return new ConditionPropertyDescriptor("LastScene");
-                yield return new ConditionPropertyDescriptor<ItemData[], string[]>("_requiresOneOfTheseItems", new ArrayConverter<ItemData, string>(new StaticDataObjConverter<ItemData>()));
-                yield return new ConditionPropertyDescriptor<ItemData[], string[]>("_requiresAllOfTheseItems", new ArrayConverter<ItemData, string>(new StaticDataObjConverter<ItemData>()));
-                yield return new ConditionPropertyDescriptor<ItemData[], string[]>("_mustNotHaveTheseItems", new ArrayConverter<ItemData, string>(new StaticDataObjConverter<ItemData>()));
-                yield return new ConditionPropertyDescriptor<AbilityData[], string[]>("_mustHaveTheseAbilities", new ArrayConverter<AbilityData, string>(new StaticDataObjConverter<AbilityData>()));
-                yield return new ConditionPropertyDescriptor<AbilityData[], string[]>("_mustNotHaveTheseAbilities", new ArrayConverter<AbilityData, string>(new StaticDataObjConverter<AbilityData>()));
+                yield return ConditionPropertyDescriptor.Create("_never");
+                yield return ConditionPropertyDescriptor.Create("CurrentScene");
+                yield return ConditionPropertyDescriptor.Create("LastScene");
+                yield return ConditionPropertyDescriptor.Create("_requiresOneOfTheseItems", ArrayConverter.Create(new StaticDataObjConverter<ItemData>()));
+                yield return ConditionPropertyDescriptor.Create("_requiresAllOfTheseItems", ArrayConverter.Create(new StaticDataObjConverter<ItemData>()));
+                yield return ConditionPropertyDescriptor.Create("_mustNotHaveTheseItems", ArrayConverter.Create(new StaticDataObjConverter<ItemData>()));
+                yield return ConditionPropertyDescriptor.Create("_mustHaveTheseAbilities", ArrayConverter.Create(new StaticDataObjConverter<AbilityData>()));
+                yield return ConditionPropertyDescriptor.Create("_mustNotHaveTheseAbilities", ArrayConverter.Create(new StaticDataObjConverter<AbilityData>()));
             }
         }
     }
